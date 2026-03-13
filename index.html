@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qwest Online – 3D Printed Collectibles & Tech</title>
+<meta name="description" content="Qwest Online – Custom 3D printed products for gamers, anime fans, pet lovers and more. Unique electronic-integrated collectibles made in Saudi Arabia.">
+<meta property="og:title" content="Qwest Online">
+<meta property="og:description" content="Custom 3D printed collectibles & electronic gadgets for every fandom.">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #080b10;
+    --surface: #0e1420;
+    --surface2: #131929;
+    --accent: #00f0ff;
+    --accent2: #ff3cac;
+    --accent3: #7b2fff;
+    --text: #e8eaf0;
+    --muted: #6b7280;
+    --border: rgba(0,240,255,0.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Outfit', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* GRID BG */
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(0,240,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,240,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 3rem;
+    background: rgba(8,11,16,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 1.4rem;
+    letter-spacing: 0.1em;
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  .nav-cta {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 0.5rem 1.4rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+
+  .nav-cta:hover {
+    background: var(--accent);
+    color: var(--bg);
+    box-shadow: 0 0 20px rgba(0,240,255,0.4);
+  }
+
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 8rem 2rem 4rem;
+    z-index: 1;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(123,47,255,0.15) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .hero-glow2 {
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0,240,255,0.1) 0%, transparent 70%);
+    top: 30%; left: 20%;
+    pointer-events: none;
+    animation: float 8s ease-in-out infinite;
+  }
+
+  .hero-glow3 {
+    position: absolute;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(255,60,172,0.1) 0%, transparent 70%);
+    bottom: 20%; right: 15%;
+    pointer-events: none;
+    animation: float 6s ease-in-out infinite reverse;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-30px); }
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: rgba(0,240,255,0.08);
+    border: 1px solid rgba(0,240,255,0.2);
+    color: var(--accent);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 0.4rem 1rem;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero h1 {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.8s ease 0.1s both;
+  }
+
+  .hero h1 span {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent3) 50%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 560px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+    animation: fadeUp 0.8s ease 0.2s both;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeUp 0.8s ease 0.3s both;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent3), var(--accent));
+    color: var(--bg);
+    border: none;
+    padding: 0.9rem 2.2rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(123,47,255,0.4);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.9rem 2.2rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s;
+    display: inline-block;
+  }
+
+  .btn-ghost:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* CATEGORIES */
+  .section {
+    position: relative;
+    z-index: 1;
+    padding: 5rem 3rem;
+    max-width: 1300px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.8rem;
+  }
+
+  .section-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 700;
+    margin-bottom: 3rem;
+  }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .cat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cat-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, transparent, rgba(0,240,255,0.04));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .cat-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-4px);
+    box-shadow: 0 10px 30px rgba(0,240,255,0.1);
+  }
+
+  .cat-card:hover::before { opacity: 1; }
+
+  .cat-icon { font-size: 2.5rem; margin-bottom: 0.8rem; display: block; }
+
+  .cat-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+
+  .cat-count {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 0.3rem;
+  }
+
+  /* PRODUCTS */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .product-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+
+  .product-card:hover {
+    border-color: rgba(123,47,255,0.4);
+    transform: translateY(-4px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+  }
+
+  .product-img {
+    width: 100%;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-img-gaming { background: linear-gradient(135deg, #0d1b2a, #1a0533); }
+  .product-img-anime { background: linear-gradient(135deg, #1a0020, #2d0050); }
+  .product-img-pets { background: linear-gradient(135deg, #0a1f0a, #001a10); }
+  .product-img-series { background: linear-gradient(135deg, #1a1000, #2d1a00); }
+  .product-img-esp { background: linear-gradient(135deg, #001a2d, #000d1a); }
+  .product-img-custom { background: linear-gradient(135deg, #1a001a, #0d000d); }
+
+  .product-badge {
+    position: absolute;
+    top: 1rem; left: 1rem;
+    background: var(--accent2);
+    color: white;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+  }
+
+  .product-badge.new { background: var(--accent3); }
+  .product-badge.hot { background: var(--accent2); }
+  .product-badge.esp { background: var(--accent); color: var(--bg); }
+
+  .product-info { padding: 1.2rem; }
+
+  .product-category {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+
+  .product-name {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.9rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    line-height: 1.3;
+  }
+
+  .product-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 1rem;
+  }
+
+  .product-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .product-price {
+    font-family: 'Orbitron', monospace;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .product-price span {
+    font-size: 0.7rem;
+    color: var(--muted);
+    font-family: 'Outfit', sans-serif;
+    font-weight: 400;
+  }
+
+  .add-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 36px; height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.2s;
+  }
+
+  .add-btn:hover {
+    background: var(--accent3);
+    border-color: var(--accent3);
+    color: white;
+  }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+
+  /* FEATURES */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .feature-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 2px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--accent3), var(--accent));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+
+  .feature-card:hover::after { transform: scaleX(1); }
+
+  .feature-icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+
+  .feature-title {
+    font-family: 'Orbitron', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.05em;
+  }
+
+  .feature-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+  /* NEWSLETTER */
+  .newsletter {
+    position: relative;
+    z-index: 1;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 4rem 3rem;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .newsletter::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, rgba(123,47,255,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .newsletter h2 {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    margin-bottom: 0.8rem;
+  }
+
+  .newsletter p { color: var(--muted); margin-bottom: 2rem; font-size: 0.95rem; }
+
+  .newsletter-form {
+    display: flex;
+    gap: 0;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .newsletter-form input {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-right: none;
+    color: var(--text);
+    padding: 0.85rem 1.2rem;
+    font-family: 'Outfit', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+  }
+
+  .newsletter-form input:focus { border-color: var(--accent); }
+  .newsletter-form input::placeholder { color: var(--muted); }
+
+  .newsletter-form button {
+    background: linear-gradient(135deg, var(--accent3), var(--accent));
+    border: none;
+    color: var(--bg);
+    padding: 0.85rem 1.5rem;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+
+  .newsletter-form button:hover { opacity: 0.85; }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 1;
+    padding: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: gap;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .footer-logo {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: 1.2rem;
+    background: linear-gradient(135deg, var(--accent), var(--accent3));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+    flex-wrap: wrap;
+  }
+
+  .footer-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--accent); }
+
+  .footer-copy {
+    color: var(--muted);
+    font-size: 0.8rem;
+    width: 100%;
+    text-align: center;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    margin-top: 0.5rem;
+  }
+
+  /* SCROLL ANIMATION */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .section { padding: 3rem 1.5rem; }
+    footer { padding: 2rem 1.5rem; }
+    .newsletter { padding: 3rem 1.5rem; }
+    .newsletter-form { flex-direction: column; }
+    .newsletter-form input { border-right: 1px solid var(--border); border-bottom: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">QWEST</a>
+  <ul class="nav-links">
+    <li><a href="#categories">Shop</a></li>
+    <li><a href="#products">Products</a></li>
+    <li><a href="#features">About</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#products" class="nav-cta">Shop Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-glow3"></div>
+  <div>
+    <div class="hero-badge">🇸🇦 Made in Saudi Arabia</div>
+    <h1>Where <span>3D Printing</span><br>Meets Your World</h1>
+    <p>Custom 3D printed collectibles and electronic gadgets for gamers, anime fans, series lovers, and pet owners. Every piece is crafted for your passion.</p>
+    <div class="hero-btns">
+      <a href="#products" class="btn-primary">Explore Products</a>
+      <a href="#categories" class="btn-ghost">Browse Categories</a>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- CATEGORIES -->
+<section class="section" id="categories">
+  <div class="reveal">
+    <div class="section-label">Browse by Interest</div>
+    <h2 class="section-title">Find Your Category</h2>
+  </div>
+  <div class="categories-grid reveal">
+    <div class="cat-card">
+      <span class="cat-icon">🎮</span>
+      <div class="cat-name">Gaming</div>
+      <div class="cat-count">Controllers, stands & more</div>
+    </div>
+    <div class="cat-card">
+      <span class="cat-icon">⛩️</span>
+      <div class="cat-name">Anime</div>
+      <div class="cat-count">Figures & collectibles</div>
+    </div>
+    <div class="cat-card">
+      <span class="cat-icon">🎬</span>
+      <div class="cat-name">Series & Movies</div>
+      <div class="cat-count">Pop culture props</div>
+    </div>
+    <div class="cat-card">
+      <span class="cat-icon">🐾</span>
+      <div class="cat-name">Pet Lovers</div>
+      <div class="cat-count">Custom pet accessories</div>
+    </div>
+    <div class="cat-card">
+      <span class="cat-icon">⚡</span>
+      <div class="cat-name">ESP Gadgets</div>
+      <div class="cat-count">Smart electronic prints</div>
+    </div>
+    <div class="cat-card">
+      <span class="cat-icon">✨</span>
+      <div class="cat-name">Custom Orders</div>
+      <div class="cat-count">Design your own</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- PRODUCTS -->
+<section class="section" id="products">
+  <div class="reveal">
+    <div class="section-label">Featured Collection</div>
+    <h2 class="section-title">Popular Products</h2>
+  </div>
+  <div class="products-grid reveal">
+
+    <div class="product-card">
+      <div class="product-img product-img-gaming">
+        🎮
+        <div class="product-badge hot">HOT</div>
+      </div>
+      <div class="product-info">
+        <div class="product-category">Gaming</div>
+        <div class="product-name">Controller Wall Mount Pro</div>
+        <div class="product-desc">Magnetic 3D printed wall mount for PS5 & Xbox controllers. RGB LED integrated.</div>
+        <div class="product-footer">
+          <div class="product-price">89 <span>SAR</span></div>
+          <button class="add-btn">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img product-img-anime">
+        ⛩️
+        <div class="product-badge new">NEW</div>
+      </div>
+      <div class="product-info">
+        <div class="product-category">Anime</div>
+        <div class="product-name">Custom Chibi Figure Stand</div>
+        <div class="product-desc">Personalized anime-style figure printed in high detail resin. Choose your character.</div>
+        <div class="product-footer">
+          <div class="product-price">149 <span>SAR</span></div>
+          <button class="add-btn">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img product-img-esp">
+        ⚡
+        <div class="product-badge esp">ESP32</div>
+      </div>
+      <div class="product-info">
+        <div class="product-category">ESP Gadgets</div>
+        <div class="product-name">Smart Desk Companion</div>
+        <div class="product-desc">ESP32-powered ambient display with clock, weather & notifications in a custom 3D shell.</div>
+        <div class="product-footer">
+          <div class="product-price">219 <span>SAR</span></div>
+          <button class="add-btn">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img product-img-pets">
+        🐾
+        <div class="product-badge new">NEW</div>
+      </div>
+      <div class="product-info">
+        <div class="product-category">Pet Lovers</div>
+        <div class="product-name">Custom Pet Name Tag</div>
+        <div class="product-desc">Durable 3D printed name tag with your pet's name and your contact info. Weather resistant.</div>
+        <div class="product-footer">
+          <div class="product-price">35 <span>SAR</span></div>
+          <button class="add-btn">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img product-img-series">
+        🎬
+        <div class="product-badge hot">HOT</div>
+      </div>
+      <div class="product-info">
+        <div class="product-category">Series & Movies</div>
+        <div class="product-name">Iconic Prop Replica</div>
+        <div class="product-desc">Mini replica props from your favorite series. High detail, desk-sized collectibles.</div>
+        <div class="product-footer">
+          <div class="product-price">75 <span>SAR</span></div>
+          <button class="add-btn">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img product-img-custom">
+        ✨
+        <div class="product-badge new">CUSTOM</div>
+      </div>
+      <div class="product-info">
+        <div class="product-category">Custom Orders</div>
+        <div class="product-name">Design Your Own</div>
+        <div class="product-desc">Send us your idea and we'll print it. Full customization available for all categories.</div>
+        <div class="product-footer">
+          <div class="product-price">From 50 <span>SAR</span></div>
+          <button class="add-btn">+</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="reveal">
+    <div class="section-label">Why Qwest Online</div>
+    <h2 class="section-title">Built Different</h2>
+  </div>
+  <div class="features-grid reveal">
+    <div class="feature-card">
+      <span class="feature-icon">🖨️</span>
+      <div class="feature-title">High Quality Prints</div>
+      <div class="feature-desc">Professional FDM & resin printing with premium materials. Every detail matters.</div>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">⚡</span>
+      <div class="feature-title">ESP Integration</div>
+      <div class="feature-desc">We merge 3D printing with ESP32/ESP8266 electronics for smart, functional products.</div>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🎨</span>
+      <div class="feature-title">Full Customization</div>
+      <div class="feature-desc">Tell us your idea. We design, print, and deliver exactly what you imagined.</div>
+    </div>
+    <div class="feature-card">
+      <span class="feature-icon">🇸🇦</span>
+      <div class="feature-title">Made in Saudi Arabia</div>
+      <div class="feature-desc">Local production means fast delivery across the Kingdom and direct support.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- NEWSLETTER -->
+<div class="newsletter" id="contact">
+  <div style="position:relative;z-index:1">
+    <div class="section-label" style="text-align:center">Stay Updated</div>
+    <h2>Get Notified on New Drops</h2>
+    <p>Be the first to know about new products, limited editions, and exclusive offers.</p>
+    <div class="newsletter-form">
+      <input type="email" placeholder="your@email.com">
+      <button>Subscribe</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">QWEST ONLINE</div>
+  <ul class="footer-links">
+    <li><a href="#">Shop</a></li>
+    <li><a href="#">Custom Orders</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Contact</a></li>
+    <li><a href="#">Privacy Policy</a></li>
+  </ul>
+  <div class="footer-copy">© 2025 Qwest Online – All rights reserved. Made with ❤️ in Saudi Arabia 🇸🇦</div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Add to cart animation
+  document.querySelectorAll('.add-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      this.textContent = '✓';
+      this.style.background = '#00f0ff';
+      this.style.color = '#080b10';
+      setTimeout(() => {
+        this.textContent = '+';
+        this.style.background = '';
+        this.style.color = '';
+      }, 1000);
+    });
+  });
+</script>
+
+</body>
+</html>
